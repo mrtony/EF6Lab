@@ -42,10 +42,26 @@ namespace Pratice01
     {
         static void Main(string[] args)
         {
-            Practice10();
+            Practice11();
         }
 
         //---------------Day2--------------
+        /// <summary>
+        /// 目的: 練習將int轉成enum
+        /// </summary>
+        static private void Practice11()
+        {
+            using (var db = new ContosoUniversityEntities())
+            {
+                var courses = db.Course;
+
+                foreach (var course in courses)
+                {
+                    Console.WriteLine(course.Credits + "\t" + course.Title);
+                }
+            }
+        }
+
         /// <summary>
         /// 以store procedure取得要查尋的title的course - 練習 Entity Framework 的 Stored Procedure 匯入與設定
         /// </summary>
@@ -79,7 +95,7 @@ namespace Pratice01
             using (var db = new ContosoUniversityEntities())
             {
                 var course = db.Course.Find(1);
-                course.Credits = 666;
+                course.Credits = CreditType.Low;
 
                 Console.ReadKey();
                 db.SaveChanges();
@@ -95,7 +111,7 @@ namespace Pratice01
             using (var db = new ContosoUniversityEntities())
             {
                 course = db.Course.Find(1);
-                course.Credits = 888;
+                course.Credits = CreditType.Low;
             }
 
             //即使attach了, 但沒有修改state, EF還是不會對DB作Update
@@ -125,7 +141,7 @@ namespace Pratice01
             {
                 var course = db.Course.Find(1);
 
-                course.Credits = 110;
+                course.Credits = CreditType.Low;
 
                 var entry = db.Entry(course);
 
@@ -148,7 +164,7 @@ namespace Pratice01
             {
                 var course = db.Course.Find(1);
 
-                course.Credits = 100;
+                course.Credits = CreditType.Low;
 
                 var entry = db.Entry(course);
 
@@ -213,7 +229,7 @@ namespace Pratice01
                 { 
                     Title = "Test",
                     DepartmentID = 1,
-                    Credits = 6,
+                    Credits = CreditType.Low,
                     ModifyOn = DateTime.Now
                 };
 

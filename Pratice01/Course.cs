@@ -22,7 +22,7 @@ namespace Pratice01
     
         public int CourseID { get; set; }
         public string Title { get; set; }
-        public int Credits { get; set; }
+        public CreditType Credits { get; set; }
         public int DepartmentID { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime ModifyOn { get; set; }
