@@ -1,11 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Pratice01
 {
+    /// <summary>
+    /// 配合"使用 db.ChangeTracker.Entities() 實作在修改資料後 SaveChanges() 時自動填入 ModifiedOn 欄位的內容"新增的partial class, 對SaveChanges作擴充
+    /// </summary>
+    public partial class ContosoUniversityEntities : DbContext
+    {
+        public override int SaveChanges()
+        {
+            var entries = this.ChangeTracker.Entries();
+
+            foreach (var entry in entries)
+            {
+                Console.WriteLine("Entry name : {0}", entry.Entity.GetType().FullName);
+
+                if (entry.State == System.Data.Entity.EntityState.Modified)
+                {
+                    entry.CurrentValues.SetValues(new { ModifyOn = DateTime.Now});
+                }
+            }
+
+            return base.SaveChanges();
+        }
+    }
+
     public class Course2
     {
         public int CourseID { get; set; }
@@ -17,10 +41,36 @@ namespace Pratice01
     {
         static void Main(string[] args)
         {
-            Practice06();
+            Practice07();
         }
 
         //---------------Day2--------------
+        /// <summary>
+        /// 目的: 使用 db.ChangeTracker.Entities() 實作在修改資料後 SaveChanges() 時自動填入 ModifiedOn 欄位的內容
+        /// </summary>
+        static private void Practice07()
+        {
+            using (var db = new ContosoUniversityEntities())
+            {
+                var course = db.Course.Find(1);
+
+                course.Credits = 100;
+
+                var entry = db.Entry(course);
+
+                Console.WriteLine("Original Value=" + entry.OriginalValues.GetValue<int>("Credits"));
+                Console.WriteLine("Current Value=" + entry.CurrentValues.GetValue<int>("Credits"));
+
+                Console.WriteLine("State:" + "\t" + entry.State);
+
+                db.SaveChanges();
+            }
+
+        }
+
+        /// <summary>
+        /// 目的: 使用 db.Entry 取得實體物件(Entity)的內部資訊，包含實體狀態(State)與原始值(OriginalValue)
+        /// </summary>
         static private void Practice06()
         {
             using (var db = new ContosoUniversityEntities())
