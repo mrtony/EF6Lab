@@ -19,6 +19,7 @@ namespace Pratice01
             foreach (var entry in entries)
             {
                 Console.WriteLine("Entry name : {0}", entry.Entity.GetType().FullName);
+                Console.WriteLine(entry.Entity.GetType().FullName.Contains("Course")? "This is a course table" : "This is not course table");
 
                 if (entry.State == System.Data.Entity.EntityState.Modified)
                 {
@@ -41,10 +42,40 @@ namespace Pratice01
     {
         static void Main(string[] args)
         {
-            Practice07();
+            Practice08();
         }
 
         //---------------Day2--------------
+        /// <summary>
+        /// 目的: 使用離線模式修改資料
+        /// </summary>
+        static private void Practice08()
+        {
+            Course course;
+            using (var db = new ContosoUniversityEntities())
+            {
+                course = db.Course.Find(1);
+                course.Credits = 888;
+            }
+
+            //即使attach了, 但沒有修改state, EF還是不會對DB作Update
+            using (var db = new ContosoUniversityEntities())
+            {
+                db.Course.Attach(course);
+
+                db.SaveChanges();
+                Console.WriteLine("Before attached and change state, Credits={0}", db.Course.Find(1).Credits);
+            }
+
+            using (var db = new ContosoUniversityEntities())
+            {
+                db.Entry(course).State = System.Data.Entity.EntityState.Modified; //=db.Course.Attach(course);
+                db.SaveChanges();
+
+                Console.WriteLine("After attached, Credits={0}", db.Course.Find(1).Credits);
+            }
+        }
+
         /// <summary>
         /// 目的: 使用 db.ChangeTracker.Entities() 實作在修改資料後 SaveChanges() 時自動填入 ModifiedOn 欄位的內容
         /// </summary>
@@ -54,7 +85,7 @@ namespace Pratice01
             {
                 var course = db.Course.Find(1);
 
-                course.Credits = 100;
+                course.Credits = 110;
 
                 var entry = db.Entry(course);
 
