@@ -17,9 +17,30 @@ namespace Pratice01
     {
         static void Main(string[] args)
         {
-            Practice05();
+            Practice06();
         }
 
+        //---------------Day2--------------
+        static private void Practice06()
+        {
+            using (var db = new ContosoUniversityEntities())
+            {
+                var course = db.Course.Find(1);
+
+                course.Credits = 100;
+
+                var entry = db.Entry(course);
+
+                Console.WriteLine("Original Value=" + entry.OriginalValues.GetValue<int>("Credits"));
+                Console.WriteLine("Current Value=" + entry.CurrentValues.GetValue<int>("Credits"));
+
+                Console.WriteLine("State:" + "\t" + entry.State);
+            }
+
+        }
+
+
+        //---------------Day1--------------
 
         /// <summary>
         /// 使用 db.Database.SqlQuery 執行任意查詢語法，並透過自訂類別取得資料
