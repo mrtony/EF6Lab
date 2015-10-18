@@ -42,7 +42,21 @@ namespace Pratice01
     {
         static void Main(string[] args)
         {
-            Practice11();
+            Practice12();
+        }
+
+        /// <summary>
+        /// 練習 Entity Framework 使用 檢視表 的各種注意事項
+        /// </summary>
+        static private void Practice12()
+        {
+            using (var db = new ContosoUniversityEntities())
+            {
+                foreach (var course in db.vwCourse)
+                {
+                    Console.WriteLine(course.Title);
+                }
+            }
         }
 
         //---------------Day2--------------
