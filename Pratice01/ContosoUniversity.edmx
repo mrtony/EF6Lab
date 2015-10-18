@@ -15,7 +15,7 @@
           <Property Name="DepartmentID" Type="int" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="ModifyOn" Type="datetime" Nullable="false" />
-          <Property Name="testField" Type="nchar" MaxLength="10" />
+          <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
         </EntityType>
         <EntityType Name="CourseInstructor">
           <Key>
@@ -228,7 +228,7 @@
           <NavigationProperty Name="Instructors" Relationship="Self.CourseInstructor" FromRole="Course" ToRole="Person" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="ModifyOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="testField" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -239,7 +239,7 @@
           <Property Name="Budget" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="InstructorID" Type="Int32" />
-          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
           <NavigationProperty Name="Course" Relationship="Self.FK_dbo_Course_dbo_Department_DepartmentID" FromRole="Department" ToRole="Course" />
           <NavigationProperty Name="Person" Relationship="Self.FK_dbo_Department_dbo_Instructor_InstructorID" FromRole="Department" ToRole="Person" />
         </EntityType>
@@ -409,7 +409,7 @@
           <EntitySetMapping Name="Course">
             <EntityTypeMapping TypeName="ContosoUniversityModel.Course">
               <MappingFragment StoreEntitySet="Course">
-                <ScalarProperty Name="testField" ColumnName="testField" />
+                <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
                 <ScalarProperty Name="ModifyOn" ColumnName="ModifyOn" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="CourseID" ColumnName="CourseID" />

@@ -26,7 +26,7 @@ namespace Pratice01
         public int DepartmentID { get; set; }
         public System.DateTime CreatedOn { get; set; }
         public System.DateTime ModifyOn { get; set; }
-        public string testField { get; set; }
+        public byte[] RowVersion { get; set; }
     
         public virtual Department Department { get; set; }
         public virtual ICollection<Enrollment> Enrollment { get; set; }

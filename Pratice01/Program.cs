@@ -42,10 +42,34 @@ namespace Pratice01
     {
         static void Main(string[] args)
         {
-            Practice08();
+            Practice09();
         }
 
         //---------------Day2--------------
+        /// <summary>
+        /// 目的: 測試使用timestamp的並行模式 - 練習 Entity Framework 的並行模式 (Concurrency Mode) 使用方式
+        /// 準備:
+        /// 1. DB中新增type為timestamp的RowVersion欄位
+        /// 2. 更新資料庫模型
+        /// 3. 將RowVersion的並行模式設為Fixed
+        /// 測試
+        /// 1. 將course某一筆的credit改為777, build成功後,將執行環境copy到某資料夾, 然後執行 -> exe1
+        /// 2. 將course某一筆的credit改為666, build成功後執行 -> exe2
+        /// 3. 在exe1的window按任一鍵, 先更新好credit
+        /// 4. 在exe2的window按任一鍵, 會發生DbupdateConcurrency exception
+        /// </summary>
+        static private void Practice09()
+        {
+            using (var db = new ContosoUniversityEntities())
+            {
+                var course = db.Course.Find(1);
+                course.Credits = 666;
+
+                Console.ReadKey();
+                db.SaveChanges();
+            }
+        }
+
         /// <summary>
         /// 目的: 使用離線模式修改資料
         /// </summary>
