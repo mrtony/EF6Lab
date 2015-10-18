@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,26 @@ namespace Pratice01
     {
         static void Main(string[] args)
         {
-            Practice12();
+            Practice13();
+        }
+
+        static private void Practice13()
+        {
+            using (var db = new ContosoUniversityEntities())
+            {
+                var courses = db.Course;
+                db.Database.Log = (msg) => {
+                    Trace.WriteLine(msg);
+                };
+                foreach (var item in db.vwCourse)
+                {
+                    Console.WriteLine(item.Title);
+                }
+
+                var course = courses.Find(1);
+                course.Credits = CreditType.Meduim;
+                db.SaveChanges();
+            }
         }
 
         /// <summary>
