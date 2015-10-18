@@ -42,10 +42,26 @@ namespace Pratice01
     {
         static void Main(string[] args)
         {
-            Practice09();
+            Practice10();
         }
 
         //---------------Day2--------------
+        /// <summary>
+        /// 以store procedure取得要查尋的title的course - 練習 Entity Framework 的 Stored Procedure 匯入與設定
+        /// </summary>
+        static private void Practice10()
+        {
+            using (var db = new ContosoUniversityEntities())
+            {
+                var courses = db.GetCourse("%GIT%");
+
+                foreach (var course in courses)
+                {
+                    Console.WriteLine(course.DepartmentName + "\t" + course.Title);
+                }
+            }
+        }
+
         /// <summary>
         /// 目的: 測試使用timestamp的並行模式 - 練習 Entity Framework 的並行模式 (Concurrency Mode) 使用方式
         /// 準備:
